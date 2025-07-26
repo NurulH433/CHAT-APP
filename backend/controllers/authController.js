@@ -86,7 +86,16 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  // Logic for user logout
-  res.send('User logged out successfully');
-    console.log('Logout route hit');
+
+  try {
+    res.clearCookie('token');
+    res.status(200).json({
+      message: 'User logged out successfully'
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Internal server error',
+      error: error.message
+    });
+  }
 };
