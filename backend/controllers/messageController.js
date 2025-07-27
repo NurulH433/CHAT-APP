@@ -9,7 +9,13 @@ export const getMessage = async (req, res) => {
 
         const conversation = await Conversation.findOne({
             participants: {$all: [userId, userToChatId]}
-        }).populate('messages');
+        }).populate({
+            path: 'messages',
+            populate: {
+                path: 'senderId',
+                select: '-password'
+            }
+        });
 
         if (!conversation) return res.status(200).json([]);
 
