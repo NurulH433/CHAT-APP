@@ -1,6 +1,7 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 
+// Mengambil data pesan
 export const getMessage = async (req, res) => {
     try {
         const {id: userToChatId} = req.params;
@@ -8,9 +9,13 @@ export const getMessage = async (req, res) => {
 
         const conversation = await Conversation.findOne({
             participants: {$all: [userId, userToChatId]}
-        }).populate(['messages']);
+        }).populate('messages');
 
-        res.status(200).json(conversation)
+        if (!conversation) return res.status(200).json([]);
+
+        const messages = conversation.messages;
+
+        res.status(200).json(messages)
 
     } catch (error) {
         console.log('Error in getMessage controller', error.message);
@@ -18,6 +23,7 @@ export const getMessage = async (req, res) => {
     }
 }
 
+// Kirim pesan
 export const sendMessage = async (req, res) => {
     const {message} = req.body;
     const {id: receiverId} = req.params
