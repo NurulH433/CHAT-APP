@@ -1,4 +1,5 @@
 import React from 'react'
+import GenderCheckbox from './GenderCheckbox'
 
 function SignUp() {
   return (
@@ -26,6 +27,8 @@ function SignUp() {
                     </label>
                     <input type="password" placeholder="Enter your password" className="w-full input input-bordered h-10" />
                 </div>
+
+                <GenderCheckbox />
 
                 <a href="#" className="text-sm hover:underline hover:text-blue-600 mt-2 inline-block">
                     Already have an account?
