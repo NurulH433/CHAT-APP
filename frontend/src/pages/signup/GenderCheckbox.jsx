@@ -1,6 +1,5 @@
 
 function GenderCheckbox({selectedGender, onCheckboxChange}) {
-  // console.log('gender :',selectedGender);
   return (
     <div className='flex'>
       <div className='form-control'>
