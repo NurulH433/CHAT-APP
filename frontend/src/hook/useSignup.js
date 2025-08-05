@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
+import { useAuthContext } from '../context/authContext';
 
 const useSignup = () => {
     const [loading, setLoading] = useState(false);
+    const {setAuthUser} = useAuthContext()
     
     const signup = async (inputs) => {
         const success = handleInputErrors(inputs);
@@ -17,9 +19,16 @@ const useSignup = () => {
             });
 
             const data = await res.json();
-            console.log(data);
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // localStorage
+            localStorage.setItem('chat-user', JSON.stringify(data))
+            setAuthUser(data)
         } catch (error) {
             toast.error(error.message)
+            return false;
         } finally {
             setLoading(false);
         }
@@ -34,11 +43,9 @@ export default useSignup
 
 function handleInputErrors({fullName,username,password,confirmPassword,gender}) {
 
-    console.log('inputs', {fullName,username,password,confirmPassword,gender});
-    console.log(!username);
-    if (!fullName || !username || !password || !confirmPassword || gender) {
-        toast.error('Please fill in all fields')
-        return false
+    if (!fullName || !username || !password || !confirmPassword || !gender) {
+        toast.error('Dont empty an all fileds')
+        return false;
     }
 
     if (password !== confirmPassword) {
@@ -47,6 +54,9 @@ function handleInputErrors({fullName,username,password,confirmPassword,gender}) 
     }
 
     if (password.length < 6) {
-        toast.error('')
+        toast.error('Password min 6 character')
+        return false;
     }
+
+    return true;
 }
