@@ -90,7 +90,12 @@ function SignUp() {
                     </Link>
 
                     <div>
-                        <button className="btn btn-sm btn-block mt-2 border border-slate-700 bg-blue-600 text-white">Sign Up</button>
+                        <button 
+                            className="btn btn-sm btn-block mt-2 border border-slate-700 bg-blue-600 text-white"
+                             disabled={loading}
+                        >
+                            {loading ? <span className='loading loading-spinner'></span> : 'Sign Up'}
+                        </button>
                     </div>
                 </form>
             </div>
